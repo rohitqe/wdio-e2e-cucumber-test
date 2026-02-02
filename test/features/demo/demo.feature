@@ -1,11 +1,16 @@
-Feature: Feature name
+Feature: Demo Feature
 
     Feature Description
     This is first feature file for my project
 
-    @demo
-    Scenario: Navigate to the login screen
-    
-    Given the user launches the CURA web app
-    When user clicks on Make appointment button
-    Then login page should be displayed
+    # @demo
+    Scenario Outline: Run first Demo Feature
+        Given Google page is opened
+        When Search with <searchItem>
+        Then Click on the first search result
+        Then URL should match <expectedURL>
+
+
+        Examples:
+            | TestID      | searchItem |        expectedURL     |
+            | DEMO_TC001  |     WDIO   |  https://webdriver.io/ |
