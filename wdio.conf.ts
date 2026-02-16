@@ -90,7 +90,7 @@ export const config: WebdriverIO.Config = {
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
 
-  baseUrl: "https://the-internet.herokuapp.com",
+  baseUrl: "https://localhost",
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,

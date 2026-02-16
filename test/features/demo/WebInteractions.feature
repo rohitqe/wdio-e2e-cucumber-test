@@ -1,6 +1,6 @@
 Feature: Web Interactions
 
-    @demo
+    # @demo
     Scenario Outline: Demo Web Interaction
 
         Given Web Page is opened
