@@ -1,6 +1,6 @@
 Feature:  Web Table Interactions
 
-    # @demo
+    @smoke
     Scenario Outline: Demo Web Table Interactions
 
         Given Web Page for Table is opened

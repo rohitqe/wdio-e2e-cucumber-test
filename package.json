@@ -14,8 +14,8 @@
     "prettier": "^3.8.1"
   },
   "scripts": {
-    "wdio": "wdio run ./wdio.conf.ts",
-    "demo": "wdio run ./wdio.conf.ts --cucumberOpts.tags='@demo'",
+    "demo": "npx wdio ./wdio.conf.ts --cucumberOpts.tagExpression='@demo'",
+    "smoke":"npx wdio ./wdio.conf.ts --cucumberOpts.tagExpression='@smoke'",
     "pretty": "prettier --write ."
   }
 }

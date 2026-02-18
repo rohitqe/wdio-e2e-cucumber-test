@@ -3,7 +3,7 @@ Feature: Demo Feature
     Feature Description
     This is first feature file for my project
 
-    @demo
+    @demo @smoke
     Scenario Outline: Run first Demo Feature
         Given Google page is opened
         When Search with <searchItem>

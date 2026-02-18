@@ -47,7 +47,7 @@ Then(/^URL should match (.*)$/, async function (expectedURL) {
  */
 
 Given(/^Web Page is opened$/, async function () {
-  await browser.url("/upload");
+  await browser.url("https://the-internet.herokuapp.com/upload");
   await browser.setTimeout({ implicit: 15000, pageLoad: 10000 });
   await browser.maximizeWindow();
 });
