@@ -5,7 +5,6 @@ import { expect } from "chai";
 Given(/^Login to inventory web App$/, async function () {
   /** 1. Launch Browser and land on to Inventory Website */
   await browser.url("https://www.saucedemo.com/");
-  await browser.setTimeout({ implicit: 15000, pageLoad: 10000 });
   await browser.maximizeWindow();
 
   /** 2. Login to Inventory */
@@ -23,7 +22,6 @@ Given(/^Login to inventory web App$/, async function () {
 Given(/^Web Page for Table is opened$/, async function () {
   /** 1. Launch Browser and navigate to webtable page */
   await browser.url("https://the-internet.herokuapp.com/tables");
-  await browser.setTimeout({ implicit: 15000, pageLoad: 10000 });
   await browser.maximizeWindow();
 
   let text = await $(`h3`).getText();
@@ -33,7 +31,6 @@ Given(/^Web Page for Table is opened$/, async function () {
 /** Amazon Scrolling Feature definition */
 Given(/^Open Amazon Webpage$/, async function () {
   await browser.url(`https://www.amazon.in`);
-  await browser.setTimeout({ implicit: 15000, pageLoad: 10000 });
   await browser.maximizeWindow();
 
   // console.log(`>> Browser Object: ${JSON.stringify(browser)}`);
