@@ -36,8 +36,10 @@ Given(/^Open Amazon Webpage$/, async function () {
   await browser.setTimeout({ implicit: 15000, pageLoad: 10000 });
   await browser.maximizeWindow();
 
+  // console.log(`>> Browser Object: ${JSON.stringify(browser)}`);
+
   let signInText = $(`#nav-link-accountList-nav-line-1`);
   await signInText.waitForExist({ timeout: 10000 });
-  console.log(`>> SignIn Text Exists ?: ${await signInText.isExisting()}`);
+  // console.log(`>> SignIn Text Exists ?: ${await signInText.isExisting()}`);
   expect(await signInText.isExisting()).to.be.true;
 });

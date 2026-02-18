@@ -25,8 +25,20 @@ Then(/^Click on the first search result$/, async function () {
 
 Then(/^URL should match (.*)$/, async function (expectedURL) {
   console.log(`Expected URL: ${expectedURL}`);
+  await browser.waitUntil(
+    async () => {
+      return (
+        (await browser.getTitle()) ===
+        `WebdriverIO · Next-gen browser and mobile automation test framework for Node.js | WebdriverIO`
+      );
+    },
+    {
+      timeout: 10000,
+      interval: 500,
+      timeoutMsg: `Unable to load webpage: ${await browser.getTitle()}`,
+    },
+  );
   const actualURL = await browser.getUrl();
-  console.log(`Actual URL: ${actualURL}`);
   expect(actualURL).toBe(await expectedURL);
 });
 

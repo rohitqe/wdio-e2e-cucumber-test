@@ -55,6 +55,8 @@ export const config: WebdriverIO.Config = {
   capabilities: [
     {
       browserName: "chrome",
+      acceptInsecureCerts: true,
+      timeouts: { implicit: 15000, pageLoad: 10000, script: 25000 },
     },
   ],
 
@@ -154,7 +156,7 @@ export const config: WebdriverIO.Config = {
     // <string> (expression) only execute the features or scenarios with tags matching the expression
     tagExpression: "@demo",
     // <number> timeout for step definitions
-    timeout: 60000,
+    timeout: 300000,
     // <boolean> Enable this config to treat undefined definitions as warnings.
     ignoreUndefinedDefinitions: false,
   },

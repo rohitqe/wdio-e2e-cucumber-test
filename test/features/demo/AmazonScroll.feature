@@ -1,6 +1,6 @@
 Feature: Practising advance scroll
 
-    @demo
+    # @demo
     Scenario: Advance Scrolling
 
     Given Open Amazon Webpage
