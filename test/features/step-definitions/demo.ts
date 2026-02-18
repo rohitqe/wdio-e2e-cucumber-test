@@ -182,8 +182,9 @@ When(/^Perform Web Interactions$/, async function () {
   // console.log(`>> alertText: ${alertText}`);
   // await browser.sendAlertText(`Hello JS Prompt...`);
 
-  await $(`#file-upload`).addValue(`${process.cwd()}/data/fileupload/dummy.txt`);
+  await $(`#file-upload`).addValue(
+    `${process.cwd()}/data/fileupload/dummy.txt`,
+  );
   await $(`#file-submit`).click();
   expect(await $(`<h3>`).getText()).toBe(`File Uploaded!`);
-
 });
