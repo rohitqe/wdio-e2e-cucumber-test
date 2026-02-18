@@ -1,6 +1,7 @@
 import { Given } from "@cucumber/cucumber";
 import { expect } from "chai";
 
+/** Web Interactions Feature definition */
 Given(/^Login to inventory web App$/, async function () {
   /** 1. Launch Browser and land on to Inventory Website */
   await browser.url("https://www.saucedemo.com/");
@@ -18,6 +19,7 @@ Given(/^Login to inventory web App$/, async function () {
   expect(title).to.equal("Swag Labs");
 });
 
+/** Web Table Interactions Feature definition */
 Given(/^Web Page for Table is opened$/, async function () {
   /** 1. Launch Browser and navigate to webtable page */
   await browser.url("https://the-internet.herokuapp.com/tables");

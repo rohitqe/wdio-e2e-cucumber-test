@@ -10,6 +10,7 @@ Feature:  Web Table Interactions
         Then Get single column
         Then Get single cell value [based on another condition]
 
+
         Examples:
             | TestID       |
             | WEBTBL_TC002 |

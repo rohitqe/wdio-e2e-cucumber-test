@@ -121,7 +121,7 @@ Then(/^Get whole table data$/, async function () {
     }
     arr.push(personObj);
   }
-  //   console.log(`>> Whole table data: ${JSON.stringify(arr)}`);
+  console.log(`>> Whole table data: ${JSON.stringify(arr)}`);
 });
 
 /** Step 3. Get single row [wher lastname is 'Json'] */
@@ -178,19 +178,26 @@ Then(/^Get single column$/, async function () {
   console.log(`>> Single column values: ${JSON.stringify(arr)}`);
 });
 
+/** Step 4. Get single cell value */
 Then(
   /^Get single cell value \[based on another condition\]$/,
   async function () {
-      let rows = $$(`//table[@id='table1']/tbody/tr`);
-      let arr = [];
-      const price = 50;
-      for (let i = 0; i < (await rows.length); i++) {
-            let due = await $(`//table[@id='table1']/tbody/tr[${i+1}]/td[4]`).getText();
-            let firstname = await $(`//table[@id='table1']/tbody/tr[${i+1}]/td[2]`).getText();
-            if (+due.replace("$", "") > price) {
-              arr.push(firstname);
-            }
+    let rows = $$(`//table[@id='table1']/tbody/tr`);
+    let arr = [];
+    const price = 50;
+    for (let i = 0; i < (await rows.length); i++) {
+      let due = await $(
+        `//table[@id='table1']/tbody/tr[${i + 1}]/td[4]`,
+      ).getText();
+      let firstname = await $(
+        `//table[@id='table1']/tbody/tr[${i + 1}]/td[2]`,
+      ).getText();
+      if (+due.replace("$", "") > price) {
+        arr.push(firstname);
       }
-      console.log(`>> firstname where due is more than ${price} is: ${JSON.stringify(arr)}`)
+    }
+    console.log(
+      `>> firstname where due is more than ${price} is: ${JSON.stringify(arr)}`,
+    );
   },
 );
