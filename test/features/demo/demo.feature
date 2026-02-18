@@ -3,7 +3,7 @@ Feature: Demo Feature
     Feature Description
     This is first feature file for my project
 
-    @demo @smoke
+    @demo
     Scenario Outline: Run first Demo Feature
         Given Google page is opened
         When Search with <searchItem>
@@ -12,5 +12,5 @@ Feature: Demo Feature
 
 
         Examples:
-            | TestID      | searchItem |        expectedURL     |
-            | DEMO_TC001  |     WDIO   |  https://webdriver.io/ |
+            | TestID     | searchItem | expectedURL           |
+            | DEMO_TC001 | WDIO       | https://webdriver.io/ |

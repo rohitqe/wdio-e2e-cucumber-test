@@ -1,3 +1,4 @@
+let headless = process.env.HEADLESS
 export const config: WebdriverIO.Config = {
   //
   // ====================
@@ -57,6 +58,9 @@ export const config: WebdriverIO.Config = {
       browserName: "chrome",
       acceptInsecureCerts: true,
       timeouts: { implicit: 15000, pageLoad: 10000, script: 25000 },
+      "goog:chromeOptions": {
+        args: headless?.toUpperCase ? ["--disable-web-security", "--headless=new", "--disable-dev-shm-usage", "--no-sandbox"]: []
+      }
     },
   ],
 
