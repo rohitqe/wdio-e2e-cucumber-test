@@ -201,3 +201,37 @@ Then(
     );
   },
 );
+
+/**
+ * Step 1. Performing scroll to the visible portion
+ * Step 2. Performing scroll to the invissible portion
+ **/
+
+/** Step 1. Performing scroll to the visible portion */
+Then(/^Scroll to the visible portion$/, async function () {
+  /** scrolling down */
+  await browser.execute(() => {
+    window.scrollBy(0, window.innerHeight);
+  });
+
+  await browser.pause(1000);
+
+  /** scrolling up */
+  await browser.execute(() => {
+    window.scrollBy(0, -window.innerHeight);
+  });
+});
+
+Then(/^Scroll to the invisible portion$/, async function () {
+  /** scrolling down till the bottom of webpage */
+  await browser.execute(() => {
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+
+  await browser.pause(1000);
+
+  /** scrolling up again from bottom to top of the web pae */
+  await browser.execute(() => {
+    window.scrollTo(0, document.body.scrollTop);
+  });
+});

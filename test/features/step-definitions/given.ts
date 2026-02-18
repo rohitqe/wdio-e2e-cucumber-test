@@ -29,3 +29,15 @@ Given(/^Web Page for Table is opened$/, async function () {
   let text = await $(`h3`).getText();
   expect(text).to.equal("Data Tables");
 });
+
+/** Amazon Scrolling Feature definition */
+Given(/^Open Amazon Webpage$/, async function () {
+  await browser.url(`https://www.amazon.in`);
+  await browser.setTimeout({ implicit: 15000, pageLoad: 10000 });
+  await browser.maximizeWindow();
+
+  let signInText = $(`#nav-link-accountList-nav-line-1`);
+  await signInText.waitForExist({ timeout: 10000 });
+  console.log(`>> SignIn Text Exists ?: ${await signInText.isExisting()}`);
+  expect(await signInText.isExisting()).to.be.true;
+});
