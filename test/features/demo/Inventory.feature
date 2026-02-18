@@ -1,5 +1,5 @@
 Feature: Inventory Web
-    @demo
+    # @demo
     Scenario Outline: Interacting with Multiple Elements
         Given Login to inventory web App
         Then Inventory page should list <NumberOfProducts>
