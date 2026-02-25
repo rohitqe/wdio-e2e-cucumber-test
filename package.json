@@ -7,7 +7,7 @@
     "@wdio/cli": "^9.23.2",
     "@wdio/cucumber-framework": "^9.23.2",
     "@wdio/globals": "^9.23.0",
-    "@wdio/local-runner": "^9.23.2",
+    "@wdio/local-runner": "^9.24.0",
     "@wdio/spec-reporter": "^9.23.2",
     "chai": "^6.2.2",
     "cross-env": "^10.1.0",
@@ -15,8 +15,13 @@
     "prettier": "^3.8.1"
   },
   "scripts": {
-    "demo": "npx wdio ./wdio.conf.ts --cucumberOpts.tagExpression='@demo'",
-    "smoke": "cross-env HEADLESS=Y npx wdio wdio.conf.ts --cucumberOpts.tagExpression=@smoke",
+    "demo": "cross-env DEBUG=Y && npx wdio ./wdio.conf.ts --cucumberOpts.tagExpression='@demo'",
+    "test:demo": "cross-env DEBUG=Y && npx wdio config/wdio.test.conf.ts --cucumberOpts.tagExpression='@demo'",
+    "test:debug": "cross-env DEBUG=N && cross-env HEADLESS=N && npx wdio config/wdio.test.conf.ts --cucumberOpts.tagExpression=@debug",
+    "smoke": "cross-env DEBUG=N && cross-env HEADLESS=Y && npx wdio wdio.conf.ts --cucumberOpts.tagExpression=@smoke",
     "pretty": "prettier --write ."
+  },
+  "dependencies": {
+    "dotenv": "^17.3.1"
   }
 }

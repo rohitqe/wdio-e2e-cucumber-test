@@ -2,12 +2,13 @@ import { Then } from "@cucumber/cucumber";
 import { expect } from "chai";
 
 Then(
-  /^Inventory page should list (.*)$/,
-  async function (noOfProducts: string) {
+  /^Inventory page should (.*)\s?list (.*)$/, //I am using RegExp here to make sure if we use 'not list' then it would hanlde this
+  async function (negativeCheck: string, noOfProducts: string) {
     /** 1. Validate the number of products expected against actual product list */
     if (!noOfProducts) throw Error(`Invalid product count >> ${noOfProducts}`);
     let eleArr = $$(`.inventory_item_name`);
     expect(await eleArr.length).to.equal(parseInt(noOfProducts));
+    console.log(`>> negativeCheck: ${negativeCheck}`);
   },
 );
 

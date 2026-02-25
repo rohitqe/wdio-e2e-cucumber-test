@@ -1,4 +1,7 @@
-let headless = process.env.HEADLESS
+import dotenv from "dotenv";
+dotenv.config();
+let headless = process.env.HEADLESS;
+let debug = process.env.DEBUG;
 export const config: WebdriverIO.Config = {
   //
   // ====================
@@ -59,8 +62,16 @@ export const config: WebdriverIO.Config = {
       acceptInsecureCerts: true,
       timeouts: { implicit: 15000, pageLoad: 10000, script: 25000 },
       "goog:chromeOptions": {
-        args: headless?.toUpperCase ? ["--disable-web-security", "--headless=new", "--disable-dev-shm-usage", "--no-sandbox"]: []
-      }
+        args:
+          headless?.toUpperCase() === "Y"
+            ? [
+                "--disable-web-security",
+                "--headless=new",
+                "--disable-dev-shm-usage",
+                "--no-sandbox",
+              ]
+            : [],
+      },
     },
   ],
 
@@ -71,7 +82,8 @@ export const config: WebdriverIO.Config = {
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: "error",
+  //logLevel: "error",
+  logLevel: debug?.toUpperCase() === "Y" ? "debug" : "error",
   //
   // Set specific log levels per logger
   // loggers:
@@ -218,7 +230,16 @@ export const config: WebdriverIO.Config = {
    * @param {object}         browser      instance of created browser/device session
    */
   // before: function (capabilities, specs) {
+  //   browser.options["environment"] = config.environment
+  //   browser.options["sauseDemoURL"] = config.sauseDemoURL
   // },
+  before: function () {
+    // @ts-ignore
+    browser.options.environment = config.environment;
+
+    // @ts-ignore
+    browser.options.sauseDemoURL = config.sauseDemoURL;
+  },
   /**
    * Runs before a WebdriverIO command gets executed.
    * @param {string} commandName hook command name
@@ -241,7 +262,12 @@ export const config: WebdriverIO.Config = {
    * @param {ITestCaseHookParameter} world    world object containing information on pickle and test step
    * @param {object}                 context  Cucumber World object
    */
-  // beforeScenario: function (world, context) {
+  // beforeScenario: function(world, context){
+  //   let arr = world.pickle.name.split(/:/)
+  //   // @ts-ignore
+  //   if(arr.length > 0) browser.options.testid = arr[0]
+  //   // @ts-ignore
+  //   if(!browser.options.testid) throw Error(`Error getting testid for current scenario: ${world.pickle.name}`)
   // },
   /**
    *
@@ -251,6 +277,7 @@ export const config: WebdriverIO.Config = {
    * @param {object}             context  Cucumber World object
    */
   // beforeStep: function (step, scenario, context) {
+  //   if(browser.options.testid) context.testid = browser.options.testid
   // },
   /**
    *
