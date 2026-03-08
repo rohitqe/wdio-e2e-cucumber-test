@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import fs from "fs";
 dotenv.config();
 let headless = process.env.HEADLESS;
 let debug = process.env.DEBUG;
@@ -147,7 +148,21 @@ export const config: WebdriverIO.Config = {
   // Test reporter for stdout.
   // The only one supported by default is 'dot'
   // see also: https://webdriver.io/docs/dot-reporter
-  reporters: ["spec"],
+  reporters: [
+    "spec",
+    [
+      "allure",
+      {
+        outputDir: "allure-results",
+        disableWebdriverStepsReporting: true,
+        useCucumberStepReporter: true,
+        disableWebdriverScreenshotsReporting: false,
+        reportedEnvironmentVars: {
+          Environment: process.env.ENVIRONMENT || "TEST",
+        },
+      },
+    ],
+  ],
 
   // If you are using Cucumber you need to specify the location of your step definitions.
   cucumberOpts: {
@@ -190,8 +205,11 @@ export const config: WebdriverIO.Config = {
    * @param {object} config wdio configuration object
    * @param {Array.<Object>} capabilities list of capabilities details
    */
-  // onPrepare: function (config, capabilities) {
-  // },
+  onPrepare: function (config, capabilities) {
+    if (process.env.RUNNER === "LOCAL" && fs.existsSync("./allure-results")) {
+      fs.rmSync("./allure-results", { recursive: true, force: true });
+    }
+  },
   /**
    * Gets executed before a worker process is spawned and can be used to initialize specific service
    * for that worker as well as modify runtime environments in an async fashion.
@@ -233,13 +251,6 @@ export const config: WebdriverIO.Config = {
   //   browser.options["environment"] = config.environment
   //   browser.options["sauseDemoURL"] = config.sauseDemoURL
   // },
-  before: function () {
-    // @ts-ignore
-    browser.options.environment = config.environment;
-
-    // @ts-ignore
-    browser.options.sauseDemoURL = config.sauseDemoURL;
-  },
   /**
    * Runs before a WebdriverIO command gets executed.
    * @param {string} commandName hook command name
@@ -262,13 +273,18 @@ export const config: WebdriverIO.Config = {
    * @param {ITestCaseHookParameter} world    world object containing information on pickle and test step
    * @param {object}                 context  Cucumber World object
    */
-  // beforeScenario: function(world, context){
-  //   let arr = world.pickle.name.split(/:/)
-  //   // @ts-ignore
-  //   if(arr.length > 0) browser.options.testid = arr[0]
-  //   // @ts-ignore
-  //   if(!browser.options.testid) throw Error(`Error getting testid for current scenario: ${world.pickle.name}`)
-  // },
+  beforeScenario: function (world) {
+    //console.log(`>> World Object Value: ${JSON.stringify(world)}`);
+    let arr = world.pickle.name.split(/:/);
+    // @ts-ignore
+    if (arr.length > 0) {
+      (browser.options as any).testid = arr[0];
+    }
+    if (!(browser.options as any).testid)
+      throw Error(
+        `Error getting testid for current scenario: ${world.pickle.name}`,
+      );
+  },
   /**
    *
    * Runs before a Cucumber Step.
@@ -276,9 +292,11 @@ export const config: WebdriverIO.Config = {
    * @param {IPickle}            scenario scenario pickle
    * @param {object}             context  Cucumber World object
    */
-  // beforeStep: function (step, scenario, context) {
-  //   if(browser.options.testid) context.testid = browser.options.testid
-  // },
+  beforeStep: function (step, scenario, context) {
+    // @ts-ignore
+    if (browser.options.testid) context.testid = browser.options.testid;
+    console.log(`>> context value in beforeStep ${JSON.stringify(context)}`);
+  },
   /**
    *
    * Runs after a Cucumber Step.
@@ -290,8 +308,15 @@ export const config: WebdriverIO.Config = {
    * @param {number}             result.duration  duration of scenario in milliseconds
    * @param {object}             context          Cucumber World object
    */
-  // afterStep: function (step, scenario, result, context) {
-  // },
+  afterStep: async function (step, scenario, result, context) {
+    // console.log(`>> step: ${JSON.stringify(step)}`);
+    // console.log(`>> Scenario: ${JSON.stringify(scenario)}`);
+    // console.log(`>> Result: ${JSON.stringify(result)}`);
+    // console.log(`>> Context: ${JSON.stringify(context)}`);
+    if (!result.passed) {
+      await browser.takeScreenshot();
+    }
+  },
   /**
    *
    * Runs after a Cucumber Scenario.

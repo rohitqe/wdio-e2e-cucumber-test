@@ -4,14 +4,11 @@ import { Given, When, Then } from "@wdio/cucumber-framework";
  */
 
 Given(/^Google page is opened/, async function () {
-  console.log(`Before Opening browser...`);
   await browser.url(`https://www.google.com/`);
   await browser.pause(1000);
-  console.log(`I have landed on Google Page`);
 });
 
 When(/^Search with (.*)$/, async function (searchItem) {
-  console.log(`>> search item: ${searchItem}`);
   const ele = $(`[class='gLFyf']`);
   await ele.setValue(searchItem);
   await browser.keys("Enter");
@@ -24,7 +21,6 @@ Then(/^Click on the first search result$/, async function () {
 });
 
 Then(/^URL should match (.*)$/, async function (expectedURL) {
-  console.log(`Expected URL: ${expectedURL}`);
   await browser.waitUntil(
     async () => {
       return (

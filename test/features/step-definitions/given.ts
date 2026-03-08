@@ -1,33 +1,40 @@
 import { Given } from "@cucumber/cucumber";
 import { expect } from "chai";
+import reporter from "../../helper/reporter.ts";
 
 /** Web Interactions Feature definition */
-Given(/^Login to inventory web App$/, async function () {
-  /** 1. Launch Browser and land on to Inventory Website */
-  const url = process.env.SAUCE_DEMO_URL;
+Given(
+  /^As (a|an) (.*) user I login to inventory web App$/,
+  async function (prefixTxt, userType, dataTabe) {
+    reporter.addStep(this.testid, "info", "Started to login Inventory web...");
+    let dt = dataTabe.hashes();
 
-  if (!url) {
-    throw new Error("SAUCE_DEMO_URL is not defined in .env");
-  }
+    /** 1. Launch Browser and land on to Inventory Website */
+    const url = process.env.SAUCE_DEMO_URL;
 
-  await browser.url(url);
-  await browser.maximizeWindow();
-  console.log(`Test Username: ${process.env.TEST_STD_USERNAME}`);
+    if (!url) {
+      throw new Error("SAUCE_DEMO_URL is not defined in .env");
+    }
 
-  /** 2. Login to Inventory */
-  await $(`input[placeholder='Username']`).setValue(
-    process.env.TEST_STD_USERNAME ?? "",
-  );
-  await $(`input[type='password']`).setValue(
-    process.env.TEST_STD_PASSWORD ?? "",
-  );
-  await $(`#login-button`).click();
+    await browser.url(url);
+    await browser.maximizeWindow();
 
-  const title = await browser.getTitle();
-  console.log(`>> Title value: ${title}`);
+    /** 2. Login to Inventory */
+    await $(`input[placeholder='Username']`).setValue(dt[0].Username);
+    // await $(`input[placeholder='Username']`).setValue(
+    //   process.env.TEST_STD_USERNAME ?? "",
+    // );
+    await $(`input[type='password']`).setValue(
+      process.env.TEST_STD_PASSWORD ?? "",
+    );
+    await $(`#login-button`).click();
 
-  expect(title).to.equal("Swag Labs");
-});
+    const title = await browser.getTitle();
+    expect(title).to.equal("Swag Labs");
+    this.appid = "ABS123";
+    reporter.addStep(this.testid, "info", "Login Successfully...");
+  },
+);
 
 /** Web Table Interactions Feature definition */
 Given(/^Web Page for Table is opened$/, async function () {
@@ -57,10 +64,7 @@ Given(/^Open Amazon Webpage$/, async function () {
   await browser.url(url);
   await browser.maximizeWindow();
 
-  // console.log(`>> Browser Object: ${JSON.stringify(browser)}`);
-
   let signInText = $(`#nav-link-accountList-nav-line-1`);
   await signInText.waitForExist({ timeout: 10000 });
-  // console.log(`>> SignIn Text Exists ?: ${await signInText.isExisting()}`);
   expect(await signInText.isExisting()).to.be.true;
 });

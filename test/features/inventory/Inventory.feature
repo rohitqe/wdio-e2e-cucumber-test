@@ -1,10 +1,15 @@
 Feature: Inventory Web
     @demo @debug
-    Scenario Outline: Interacting with Multiple Elements
-        Given Login to inventory web App
+    Scenario Outline: <TestID>: Interacting with Multiple Elements
+        Given As a standard user I login to inventory web App
+            | UserType | Username                |
+            | StdUser  | standard_user           |
+            | ProbUser | problem_user            |
+            | PerfUser | performance_glitch_user |
+
         Then Inventory page should list <NumberOfProducts>
         Then Validate all products have valid price
 
         Examples:
-            | Test ID    | NumberOfProducts |
+            | TestID    | NumberOfProducts |
             | INVT_TC001 | 6                |

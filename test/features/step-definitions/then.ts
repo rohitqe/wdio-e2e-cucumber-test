@@ -1,5 +1,6 @@
 import { Then } from "@cucumber/cucumber";
 import { expect } from "chai";
+import logger from "../../helper/logger.ts";
 
 Then(
   /^Inventory page should (.*)\s?list (.*)$/, //I am using RegExp here to make sure if we use 'not list' then it would hanlde this
@@ -8,7 +9,9 @@ Then(
     if (!noOfProducts) throw Error(`Invalid product count >> ${noOfProducts}`);
     let eleArr = $$(`.inventory_item_name`);
     expect(await eleArr.length).to.equal(parseInt(noOfProducts));
-    console.log(`>> negativeCheck: ${negativeCheck}`);
+    // console.log(`>> App id: ${this.appid}`);
+    console.log(`>> Starting ${this.testid}...`);
+    console.log(`>> The appid: ${this.appid}`);
   },
 );
 
@@ -21,6 +24,7 @@ Then(
 
 Then(/^Validate all products have valid price$/, async function () {
   /** 1. Get price list */
+  logger.info(`${this.testid}: Checking the price...`);
   let eleArr = $$(`.inventory_item_price`);
   let priceStrArr = [];
 
@@ -28,13 +32,11 @@ Then(/^Validate all products have valid price$/, async function () {
     let priceStr = await eleArr[i].getText();
     priceStrArr.push(priceStr);
   }
-  console.log(`>> Price with $: ${priceStrArr}`);
 
   /** 2. Convert string to number */
   let priceNumArr = await priceStrArr.map(
     (ele) => +ele.replace("$", ""),
   ); /** urinary plus is used*/
-  console.log(`>> Price in Number: ${priceNumArr}`);
 
   /** 3. Assert if value is <=0 */
   let invalidPriceArr = priceNumArr.filter((ele) => ele <= 0);
@@ -55,10 +57,6 @@ Then(/^Check number of rows and columns$/, async function () {
   let headers = $$(`//table[@id='table1']//th`);
 
   let rowCount = await rows.length;
-  let colCount = await headers.length;
-
-  console.log(`>> Total rows: ${rowCount}`);
-  console.log(`>> Total Columns: ${colCount}`);
 
   /** Print website where First Name is Jason */
   let website;
@@ -86,9 +84,6 @@ Then(/^Check number of rows and columns$/, async function () {
       break;
     }
   }
-  console.log(
-    `---------------------\n>> Website of Jason: ${website}\n----------------------------`,
-  );
 });
 
 /** Step 2. Get whole table data */
@@ -122,7 +117,6 @@ Then(/^Get whole table data$/, async function () {
     }
     arr.push(personObj);
   }
-  console.log(`>> Whole table data: ${JSON.stringify(arr)}`);
 });
 
 /** Step 3. Get single row [wher lastname is 'Json'] */
@@ -160,9 +154,6 @@ Then(/^Get single row \[based on a condition\]$/, async function () {
       arr.push(personObj);
     }
   }
-  console.log(
-    `>> Single row where first name is [Jason]: ${JSON.stringify(arr)}`,
-  );
 });
 
 /** Step 4. Get single column */
@@ -176,7 +167,6 @@ Then(/^Get single column$/, async function () {
     ).getText();
     arr.push(cellValue);
   }
-  console.log(`>> Single column values: ${JSON.stringify(arr)}`);
 });
 
 /** Step 4. Get single cell value */
@@ -197,9 +187,6 @@ Then(
         arr.push(firstname);
       }
     }
-    console.log(
-      `>> firstname where due is more than ${price} is: ${JSON.stringify(arr)}`,
-    );
   },
 );
 
