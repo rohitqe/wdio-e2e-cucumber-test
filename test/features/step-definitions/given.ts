@@ -1,6 +1,7 @@
 import { Given } from "@cucumber/cucumber";
 import { expect } from "chai";
 import reporter from "../../helper/reporter.ts";
+import sauseHomePage from "../../page-objects/sause.home.page.ts";
 
 /** Web Interactions Feature definition */
 Given(
@@ -8,31 +9,13 @@ Given(
   async function (prefixTxt, userType, dataTabe) {
     reporter.addStep(this.testid, "info", "Started to login Inventory web...");
     let dt = dataTabe.hashes();
-
-    /** 1. Launch Browser and land on to Inventory Website */
-    const url = process.env.SAUCE_DEMO_URL;
-
-    if (!url) {
-      throw new Error("SAUCE_DEMO_URL is not defined in .env");
-    }
-
-    await browser.url(url);
-    await browser.maximizeWindow();
-
-    /** 2. Login to Inventory */
-    await $(`input[placeholder='Username']`).setValue(dt[0].Username);
-    // await $(`input[placeholder='Username']`).setValue(
-    //   process.env.TEST_STD_USERNAME ?? "",
-    // );
-    await $(`input[type='password']`).setValue(
-      process.env.TEST_STD_PASSWORD ?? "",
+    
+    await sauseHomePage.navigateTo(process.env.SAUCE_DEMO_URL!);
+    await sauseHomePage.loginToSauseApp(
+      this.testid,
+      process.env.TEST_STD_USERNAME!,
+      process.env.TEST_STD_PASSWORD!,
     );
-    await $(`#login-button`).click();
-
-    const title = await browser.getTitle();
-    expect(title).to.equal("Swag Labs");
-    this.appid = "ABS123";
-    reporter.addStep(this.testid, "info", "Login Successfully...");
   },
 );
 
